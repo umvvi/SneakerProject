@@ -3,46 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') - SneakerCon</title>
+    <title>@yield('title') - SneakCon</title>
     @vite('resources/css/app.css')
 
     <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
-        /* Navbar styling: starts as transparent and fixed at the top */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 50;
-            background-color: transparent;
-            color: white;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        /* When the user scrolls past the banner, navbar gets a solid background */
-        .navbar.scrolled {
-            background-color: white;
-            color: black;
-        }
-
-        .navbar.scrolled .nav-link {
-            color: black;
-        }
-
-        .navbar.scrolled .nav-link:hover {
-            color: #60A5FA;
-        }
-
-        .nav-link {
-            transition: color 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: #60A5FA;
-        }
-
-        /* Button animation */
         .animated-btn {
             transition: all 0.3s ease-in-out;
         }
@@ -52,160 +18,102 @@
             background-color: #3B82F6;
         }
 
-        /* Banner and background section */
-        header {
-            position: relative;
-            width: 100%;
-            height: 70vh; /* Adjust height as needed */
-            background-size: cover;
-            background-position: center;
+
+        #navbar {
+            background-color: transparent;
+            transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
 
-        header .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5); /* Add overlay */
+
+        .navbar-scrolled {
+            background-color: white !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        header .content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
+
+        .nav-link {
+            font-size: 1.125rem;
             color: white;
+            transition: color 0.3s ease-in-out;
         }
 
-        /* Responsive layout adjustments */
-        @media (max-width: 768px) {
-            .navbar .nav-links {
-                display: none; /* Hide for mobile */
-            }
 
-            .navbar .hamburger {
-                display: block; /* Show hamburger for mobile */
-            }
-
-            #mobile-menu {
-                display: none;
-                background-color: white;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                z-index: 50;
-            }
-
-            #mobile-menu a {
-                display: block;
-                padding: 12px;
-                color: black;
-                text-align: center;
-                text-decoration: none;
-            }
-
-            #mobile-menu a:hover {
-                background-color: #60A5FA;
-                color: white;
-            }
+        .navbar-scrolled .nav-link {
+            color: black !important;
         }
 
-        /* Show mobile menu when toggled */
-        .show-mobile-menu {
-            display: block !important;
+
+        .logo {
+            height: 7rem;
+            width: 7rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+
+        .navbar-scrolled .logo {
+            height: 5rem;
+            width: 5rem;
         }
     </style>
 </head>
-<body class="bg-white font-sans">
+<body class="bg-white font-sans scroll-smooth">
 
-<!-- Primary Navigation -->
-<nav id="navbar" class="navbar text-white py-4">
-    <div class="container mx-auto px-4 flex justify-between items-center">
-        <!-- Logo -->
+
+<nav id="navbar" class="fixed top-0 left-0 w-full z-30 py-4 transition-all duration-300">
+    <div class="container mx-auto flex justify-between items-center px-4 md:px-8">
+
         <div class="flex items-center space-x-2">
-            <img src="public/images/logo.svg" alt="Logo" class="h-10 w-10">
-            <span class="text-xl font-bold">SneakCon</span>
+            <img src="{{ asset('img/logo.svg') }}" alt="Logo" class="logo">
         </div>
 
-        <!-- Navbar Links (Desktop) -->
-        <div class="flex-grow text-center nav-links">
-            <div class="flex justify-center space-x-4">
-                <a href="{{ route('home') }}" class="nav-link py-2 px-4">Home</a>
-                <a href="{{ route('ticket') }}" class="nav-link py-2 px-4">Tickets</a>
-                <a href="{{ route('stand') }}" class="nav-link py-2 px-4">Stand</a>
-                <a href="{{ route('event') }}" class="nav-link py-2 px-4">Events</a>
-            </div>
+        <div class="hidden md:flex justify-center space-x-6">
+            <a href="{{ route('home') }}" class="nav-link py-2 px-4 transition duration-300">Home</a>
+            <a href="{{ route('ticket') }}" class="nav-link py-2 px-4 transition duration-300">Tickets</a>
+            <a href="{{ route('stand') }}" class="nav-link py-2 px-4 transition duration-300">Stand</a>
+            <a href="{{ route('event') }}" class="nav-link py-2 px-4 transition duration-300">Events</a>
         </div>
 
-        <!-- Button (Desktop) -->
-        <div class="hidden md:block">
-            <a href="{{ route('ticket') }}" class="bg-blue-500 text-white py-2 px-4 rounded animated-btn">Get Tickets</a>
+        <div>
+            <a href="{{ route('ticket') }}" class="bg-blue-500 text-white py-2 px-6 rounded-lg animated-btn">Get Tickets</a>
         </div>
-
-        <!-- Hamburger Menu (Mobile) -->
-        <div class="hamburger md:hidden">
-            <button id="menu-btn" class="text-white focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-        </div>
-    </div>
-
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="mobile-menu md:hidden">
-        <a href="{{ route('home') }}">Home</a>
-        <a href="{{ route('ticket') }}">Tickets</a>
-        <a href="{{ route('stand') }}">Stand</a>
-        <a href="{{ route('event') }}">Events</a>
-        <a href="{{ route('ticket') }}" class="bg-blue-500 text-white py-2 px-4 block mt-2">Get Tickets</a>
     </div>
 </nav>
 
-
-
-<!-- Main Content -->
-<main class="container mx-auto w-full">
+<main class="w-full">
     @yield('content')
 </main>
 
-<!-- Footer -->
-<footer class="bg-blue-100 py-8 mt-12">
-    <div class="container mx-auto px-4 text-center">
-        <img src="https://via.placeholder.com/150x50" alt="Logo" class="mx-auto mb-4">
-        <div class="flex justify-center space-x-6">
-            <a href="#" class="text-black hover:text-blue-500">Link One</a>
-            <a href="#" class="text-black hover:text-blue-500">Link Two</a>
-            <a href="#" class="text-black hover:text-blue-500">Link Three</a>
-            <a href="#" class="text-black hover:text-blue-500">Link Four</a>
-            <a href="#" class="text-black hover:text-blue-500">Link Five</a>
+<footer class="bg-[#5DB7DE] py-6 mt-12">
+    <div class="container mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+        <div class="mb-4 md:mb-0">
+            <img src="{{ asset('img/logo.svg') }}" alt="Logo" class="h-10">
         </div>
-        <p class="text-sm mt-6">© 2024 SneakCon. All rights reserved.</p>
+        <nav class="mb-4 md:mb-0 space-x-4">
+            <a href="{{ route('home') }}" class="text-white hover:underline">Home</a>
+            <a href="{{ route('ticket') }}" class="text-white hover:underline">Buy ticket</a>
+            <a href="{{ route('stand') }}" class="text-white hover:underline">Meer info</a>
+        </nav>
+        <div class="space-x-4">
+            <a href="#" class="text-white"><img src="{{ asset('img/facebook.png') }}" alt="Facebook" class="w-6 h-6"></a>
+            <a href="#" class="text-white"><img src="{{ asset('img/instagram.png') }}" alt="Instagram" class="w-6 h-6"></a>
+            <a href="#" class="text-white"><img src="{{ asset('img/twitter.png') }}" alt="Twitter" class="w-6 h-6"></a>
+        </div>
+    </div>
+    <div class="text-center text-white mt-6">
+        <p class="text-sm">© 2024 SneakCon. All rights reserved.</p>
     </div>
 </footer>
 
 @vite('resources/js/app.js')
 
-<!-- JavaScript for Navbar Scroll and Mobile Menu -->
 <script>
     window.addEventListener('scroll', function() {
         var navbar = document.getElementById('navbar');
-        var bannerHeight = document.querySelector('header').offsetHeight;
-
-        if (window.scrollY > bannerHeight) {
-            navbar.classList.add('scrolled');
+        if (window.scrollY > 50) {
+            navbar.classList.add('navbar-scrolled');
         } else {
-            navbar.classList.remove('scrolled');
+            navbar.classList.remove('navbar-scrolled');
         }
-    });
-
-    // Mobile Menu Toggle
-    var menuBtn = document.getElementById('menu-btn');
-    var mobileMenu = document.getElementById('mobile-menu');
-
-    menuBtn.addEventListener('click', function() {
-        mobileMenu.classList.toggle('show-mobile-menu');
     });
 </script>
 
