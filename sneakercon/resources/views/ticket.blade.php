@@ -46,11 +46,9 @@
 
     <!-- Ticket Cards Section -->
     <div class="flex flex-wrap justify-center items-center py-10 space-y-6 md:space-y-0 md:space-x-6">
-        @foreach ([
-            ['type' => 'REGULAR TICKET', 'price' => '€20', 'time' => '01 SEP 2024 Toegang vanaf 11:30'],
-            ['type' => 'AFTERNOON TICKET', 'price' => '€15', 'time' => '01 SEP 2024 Toegang vanaf 13:30'],
-            ['type' => 'EARLY ACCESS', 'price' => '€30', 'time' => '01 SEP 2024 Toegang vanaf 10:30']
-        ] as $ticket)
+        @foreach ([['type' => 'REGULAR TICKET', 'price' => '€20', 'time' => '01 SEP 2024 Toegang vanaf 11:30'],
+                  ['type' => 'AFTERNOON TICKET', 'price' => '€15', 'time' => '01 SEP 2024 Toegang vanaf 13:30'],
+                  ['type' => 'EARLY ACCESS', 'price' => '€30', 'time' => '01 SEP 2024 Toegang vanaf 10:30']] as $ticket)
             <div class="bg-white shadow-lg rounded-lg w-full md:w-64 mx-2">
                 <div class="bg-black text-white text-center py-2 rounded-t-lg">
                     <h2 class="text-sm md:text-lg font-bold">{{ $ticket['type'] }}</h2>
@@ -73,7 +71,7 @@
             </div>
             <div class="lg:w-1/2 p-6 flex flex-col justify-center">
                 <h2 class="text-2xl font-bold mb-4">KOOP JE TICKET</h2>
-                <form id="ticket-form" method="POST" action="{{ route('buy-ticket') }}" class="space-y-4">
+                <form id="ticket-form" method="POST" action="{{ route('ticket.purchase') }}" class="space-y-4">
                     @csrf
                     <input type="hidden" name="ticket_type" id="ticket-type">
 
@@ -100,11 +98,9 @@
 
                     <input type="submit" value="TICKET KOPEN" class="w-full bg-[#5DB7DE] text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-500 cursor-pointer">
                 </form>
-
             </div>
         </div>
     </div>
-
 
     <!-- Scripts -->
     <script>

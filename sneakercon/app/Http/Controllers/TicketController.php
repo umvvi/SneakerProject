@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Ticket;
 use App\Mail\TicketPurchased;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
-class TicketController extends Controller
+class TicketController extends Controller // Make sure this line is correct
 {
     public function store(Request $request)
     {

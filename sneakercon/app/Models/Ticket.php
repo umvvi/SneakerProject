@@ -9,7 +9,6 @@ class Ticket extends Model
 {
     use HasFactory;
 
-    // Define which fields can be mass-assigned
     protected $fillable = [
         'first_name',
         'last_name',
