@@ -10,7 +10,6 @@
         </div>
     @endif
 
-
     <!-- Header Section -->
     <header class="relative w-full h-screen bg-cover bg-center" style="background-image: url('{{ asset('img/banner-ticket.png') }}');">
         <div class="absolute bottom-16 left-8 text-white">
@@ -22,7 +21,6 @@
 
     <!-- Content Section -->
     <div class="max-w-5xl mx-auto px-4 py-10 md:flex md:space-x-6">
-        <!-- Text Section (Left) -->
         <div class="md:w-3/5 mb-6 md:mb-0">
             <h1 class="text-3xl md:text-4xl font-bold text-black mb-4">
                 KOOP HIER JE TICKETS!
@@ -73,6 +71,17 @@
             </div>
             <div class="lg:w-1/2 p-6 flex flex-col justify-center">
                 <h2 class="text-2xl font-bold mb-4">KOOP JE TICKET</h2>
+
+                @if ($errors->any())
+                    <div class="bg-red-500 text-white p-4 rounded-lg mb-4">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <form id="ticket-form" method="POST" action="{{ route('ticket.store') }}" class="space-y-4">
                     @csrf
                     <input type="hidden" name="ticket_type" id="ticket-type">

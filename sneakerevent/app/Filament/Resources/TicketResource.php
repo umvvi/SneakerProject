@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Filament\Resources\TicketResource;
+namespace App\Filament\Resources;
 
+use App\Filament\Resources\TicketResource\Pages;
+use App\Filament\Resources\TicketResource\RelationManagers;
 use App\Models\Ticket;
+use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TicketResource extends Resource
 {
     protected static ?string $model = Ticket::class;
 
-    public static function form(Form $form): Form // Changed to static
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('event_id')
-                    ->relationship('event', 'name')
-                    ->required(),
-                TextInput::make('name')->required(),
-                TextInput::make('city')->required(),
-                // Add any other fields you need
+                //
             ]);
     }
 
@@ -31,11 +31,26 @@ class TicketResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('event.name')->label('Event'),
-                TextColumn::make('name')->label('Name'),
-                TextColumn::make('city')->label('City'),
-                // Add any other columns you need
+                //
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
