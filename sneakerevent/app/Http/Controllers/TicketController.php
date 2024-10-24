@@ -2,58 +2,59 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ticket;
 use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Ticket;
+use App\Models\Event;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\TicketConfirmationMail;
+use PDF;
 
 class TicketController extends Controller
 {
-    // Show the ticket purchase form
     public function create()
     {
-        return view('tickets.create'); // Create a view for the ticket form
+        $events = Event::all(); // Get all events
+        return view('tickets.create', compact('events')); // Pass events to the view
     }
 
-    // Handle the ticket purchase request
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request)
     {
-        // Validate form inputs
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'location' => 'required|string|max:255',
-            'ticket_type' => 'required|string|max:255',
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'event_id' => 'required|exists:evenements,id', // Ensure this matches your event table name
+            'entry_time' => 'required|string',
+            'ticket_count' => 'required|integer|min:1',
         ]);
 
-        try {
-            // Store the ticket
-            $ticket = Ticket::create([
-                'event_id' => $request->event_id, // Assume you pass the event ID from the form
-                'ticket_type' => $request->ticket_type,
-                'name' => $request->first_name . ' ' . $request->last_name,
-                'email' => $request->email,
-                'event_date' => $request->event_date, // Pass this dynamically as well
-                'city' => $request->location,
-            ]);
+        $ticket = Ticket::create([
+            'bezoekerId' => auth()->user()->id, // Assuming the user is logged in
+            'evenementId' => $validated['event_id'],
+            'aantalTickets' => $validated['ticket_count'],
+            'datum' => now(), // Current date/time
+            // Add other fields as necessary
+        ]);
 
-            // Generate PDF for the ticket
-            $pdf = Pdf::loadView('tickets.pdf', ['ticket' => $ticket]);
+        // Generate PDF
+        $pdf = PDF::loadView('tickets.pdf', ['ticket' => $ticket]);
+        $pdf->save(storage_path('tickets/' . $ticket->id . '.pdf'));
 
-            // Send confirmation email
-            Mail::to($request->email)->send(new TicketConfirmationMail($ticket, $pdf));
+        // Send email
+        Mail::to($validated['email'])->send(new \App\Mail\TicketPurchased($ticket));
 
-            // Flash success message
-            session()->flash('notification', 'Uw ticket is succesvol besteld.');
+        return redirect()->route('tickets.success')->with('success', 'Ticket purchased successfully.');
+    }
 
-            // Redirect to success page
-            return redirect()->route('success');
-        } catch (\Exception $e) {
-            \Log::error('Ticket order failed: ' . $e->getMessage());
-            session()->flash('error', 'Er is iets misgegaan bij het bestellen van uw ticket.');
-            return redirect()->back()->withInput();
-        }
+    public function show($id)
+    {
+        // Retrieve the ticket using the ID
+        $ticket = Ticket::findOrFail($id); // Adjust based on your Ticket model and database structure
+
+        // Pass the ticket data to the view
+        return view('tickets.show', compact('ticket'));
+    }
+
+    public function success()
+    {
+        return view('tickets.success'); // Your success view
     }
 }

@@ -6,25 +6,16 @@ use Illuminate\Console\Command;
 
 class CreateUser extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'app:create-user';
+    protected $signature = 'user:create {name} {email}';
+    protected $description = 'Create a new user';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
-
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
-        //
+        // Code to create a user
+        $name = $this->argument('name');
+        $email = $this->argument('email');
+
+        // Logic for user creation
+        $this->info("User created: $name with email $email");
     }
 }

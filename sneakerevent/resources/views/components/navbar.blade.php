@@ -6,13 +6,13 @@
 
         <div class="hidden md:flex justify-center space-x-8">
             <a href="{{ route('home') }}" class="nav-link py-2 px-4 transition duration-300">Home</a>
-            <a href="{{ route('ticket') }}" class="nav-link py-2 px-4 transition duration-300">Tickets</a>
-            <a href="{{ route('stand') }}" class="nav-link py-2 px-4 transition duration-300">Stand</a>
-            <a href="{{ route('event') }}" class="nav-link py-2 px-4 transition duration-300">Events</a>
+            <a href="/tickets/create" class="nav-link py-2 px-4 transition duration-300">Tickets</a>
+            <a href="/stands" class="nav-link py-2 px-4 transition duration-300">Stand</a>
+            <a href="/events" class="nav-link py-2 px-4 transition duration-300">Events</a>
         </div>
 
         <div class="flex items-center space-x-2">
-            <a href="{{ route('ticket') }}" class="bg-blue-500 text-white py-2 px-6 rounded-lg animated-btn">Get Tickets</a>
+            <a href="/tickets/create" class="bg-blue-500 text-white py-2 px-6 rounded-lg animated-btn">Get Tickets</a>
         </div>
     </div>
 </nav>

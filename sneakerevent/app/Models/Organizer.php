@@ -14,8 +14,8 @@ class Organizer extends Model
         'username',
         'password',
         'is_active',
-        'comment',
-        'created_at',
-        'updated_at',
+        'remark',
     ];
+
+    // Define any relationships if needed
 }

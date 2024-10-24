@@ -10,10 +10,14 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'date', 'location', 'number_of_tickets_per_time_slot', 'available_stands', 'is_active', 'comment'
+        'name',
+        'date',
+        'location',
+        'number_of_tickets_per_time_slot',
+        'available_stands',
+        'is_active',
+        'remark',
     ];
 
-    public function tickets() {
-        return $this->hasMany(Ticket::class);
-    }
+    // Define any relationships if needed
 }
