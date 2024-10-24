@@ -13,6 +13,8 @@ class Visitor extends Model
         'name',
         'email',
         'is_active',
-        'comment',
+        'remark',
     ];
+
+    // Define any relationships if needed
 }

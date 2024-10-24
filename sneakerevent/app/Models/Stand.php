@@ -10,10 +10,17 @@ class Stand extends Model
     use HasFactory;
 
     protected $fillable = [
-        'seller_id', 'stand_type', 'price', 'is_rented', 'is_active', 'remarks'
+        'vendor_id',
+        'stand_type',
+        'price',
+        'rented_status',
+        'is_active',
+        'remark',
     ];
 
-    public function seller() {
-        return $this->belongsTo(Seller::class);
+    // Define relationships
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
     }
 }

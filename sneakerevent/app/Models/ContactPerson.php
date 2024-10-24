@@ -10,6 +10,12 @@ class ContactPerson extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'phone', 'email', 'is_active', 'remarks'
+        'name',
+        'phone_number',
+        'email',
+        'is_active',
+        'remark',
     ];
+
+    // Define any relationships if needed
 }

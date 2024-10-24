@@ -10,7 +10,12 @@ class Price extends Model
     use HasFactory;
 
     protected $fillable = [
-        'date', 'timeslot', 'rate', 'is_active', 'remarks'
+        'date',
+        'time_slot',
+        'rate',
+        'is_active',
+        'remark',
     ];
-}
 
+    // Define any relationships if needed
+}
