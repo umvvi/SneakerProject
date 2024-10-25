@@ -10,40 +10,48 @@ use PDF;
 
 class TicketController extends Controller
 {
+    public function index()
+    {
+
+    }
+
+    // Show the form to create a new ticket
     public function create()
     {
         $events = Event::all(); // Get all events
         return view('tickets.create', compact('events')); // Pass events to the view
     }
 
+    // Store a newly created ticket in storage
     public function store(Request $request)
     {
+        // Validate the incoming request data
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|email',
-            'event_id' => 'required|exists:evenements,id', // Ensure this matches your event table name
-            'entry_time' => 'required|string',
-            'ticket_count' => 'required|integer|min:1',
+            'location' => 'required|string',
+            'ticket_type' => 'required|string',
+            'ticket_count' => 'required|integer|min:1', // Ensure at least one ticket is purchased
+            'event_id' => 'required|exists:events,id', // Ensure event_id is validated
         ]);
 
+        // Create a new ticket record
         $ticket = Ticket::create([
-            'bezoekerId' => auth()->user()->id, // Assuming the user is logged in
-            'evenementId' => $validated['event_id'],
-            'aantalTickets' => $validated['ticket_count'],
-            'datum' => now(), // Current date/time
-            // Add other fields as necessary
+            'visitor_id' => auth()->user()->id, // Adjust if needed based on your user authentication
+            'event_id' => $validated['event_id'],
+            'price_id' => null, // Set to null or replace with the actual price ID when available
+            'ticket_count' => $validated['ticket_count'],
+            'is_active' => true, // Set active status as necessary
+            'comment' => null, // You can replace this with $validated['comment'] if you add a comment field
         ]);
 
-        // Generate PDF
-        $pdf = PDF::loadView('tickets.pdf', ['ticket' => $ticket]);
-        $pdf->save(storage_path('tickets/' . $ticket->id . '.pdf'));
+        // Additional logic for sending emails or generating PDFs can go here
 
-        // Send email
-        Mail::to($validated['email'])->send(new \App\Mail\TicketPurchased($ticket));
-
-        return redirect()->route('tickets.success')->with('success', 'Ticket purchased successfully.');
+        return redirect()->route('tickets.index')->with('success', 'Ticket purchased successfully.');
     }
 
+    // Show the details of a specific ticket
     public function show($id)
     {
         // Retrieve the ticket using the ID
@@ -53,6 +61,7 @@ class TicketController extends Controller
         return view('tickets.show', compact('ticket'));
     }
 
+    // Show success view after ticket purchase
     public function success()
     {
         return view('tickets.success'); // Your success view

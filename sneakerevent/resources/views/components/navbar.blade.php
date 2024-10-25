@@ -6,7 +6,7 @@
 
         <div class="hidden md:flex justify-center space-x-8">
             <a href="{{ route('home') }}" class="nav-link py-2 px-4 transition duration-300">Home</a>
-            <a href="/tickets/create" class="nav-link py-2 px-4 transition duration-300">Tickets</a>
+            <a href="/tickets" class="nav-link py-2 px-4 transition duration-300">Tickets</a>
             <a href="/stands" class="nav-link py-2 px-4 transition duration-300">Stand</a>
             <a href="/events" class="nav-link py-2 px-4 transition duration-300">Events</a>
         </div>

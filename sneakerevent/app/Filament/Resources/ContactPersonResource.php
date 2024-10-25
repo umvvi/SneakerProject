@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TicketResource\Pages;
-use App\Filament\Resources\TicketResource\RelationManagers;
-use App\Models\Ticket;
+use App\Filament\Resources\ContactPersonResource\Pages;
+use App\Filament\Resources\ContactPersonResource\RelationManagers;
+use App\Models\ContactPerson;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TicketResource extends Resource
+class ContactPersonResource extends Resource
 {
-    protected static ?string $model = Ticket::class;
+    protected static ?string $model = ContactPerson::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -56,9 +56,9 @@ class TicketResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTickets::route('/'),
-            'create' => Pages\CreateTicket::route('/create'),
-            'edit' => Pages\EditTicket::route('/{record}/edit'),
+            'index' => Pages\ListContactPeople::route('/'),
+            'create' => Pages\CreateContactPerson::route('/create'),
+            'edit' => Pages\EditContactPerson::route('/{record}/edit'),
         ];
     }
 }
