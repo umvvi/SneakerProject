@@ -16,6 +16,4 @@ class Organizer extends Model
         'is_active',
         'remark',
     ];
-
-    // Define any relationships if needed
 }

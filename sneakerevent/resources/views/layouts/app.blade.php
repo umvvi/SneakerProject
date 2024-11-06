@@ -21,7 +21,7 @@
 <!-- Include Navbar Component -->
 <x-navbar />
 
-<main class="w-full">
+<main class="w-full" style="padding-top: calc(3.5rem + 1px);"> <!-- Adjusted padding to account for navbar height -->
     @yield('content')
 </main>
 
@@ -33,13 +33,10 @@
 
 <script>
     window.addEventListener('scroll', function () {
-        const navbar = document.getElementById('navbar');
-        if (window.scrollY > 50) {
-            navbar.classList.add('navbar-scrolled');
-        } else {
-            navbar.classList.remove('navbar-scrolled');
-        }
+        const header = document.querySelector('header');
+        header.classList.toggle('scrolled', window.scrollY > 50);
     });
 </script>
+
 </body>
 </html>

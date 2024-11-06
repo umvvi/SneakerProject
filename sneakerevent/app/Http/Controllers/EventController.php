@@ -2,75 +2,79 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Event;
+use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    // Display a listing of the events
-    public function index()
+    // Show the details of a specific event
+    public function show(Event $event)
     {
-        $events = Event::all();
-        return view('events.index', compact('events'));
+        // Eager load the tickets relationship
+        $event->load('tickets');
+
+        return view('events.show', compact('event'));
     }
 
-    // Show the form for creating a new event
+    // Show the form to create a new event (optional if you still want to create events)
     public function create()
     {
-        return view('events.create');
+        return view('admin.events.create');
     }
 
-    // Store a newly created event in the database
+    // Store a new event
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
+        $request->validate([
+            'name' => 'required',
             'date' => 'required|date',
-            'location' => 'required|string|max:255',
-            'available_tickets' => 'required|integer|min:1',
-            // Add any additional fields as necessary
+            'location' => 'required',
+            'number_of_tickets_per_timeslot' => 'required|integer',
+            'available_stands' => 'required|integer',
+        ], [
+            'name.required' => 'Event name is required.',
+            'date.required' => 'Event date is required.',
+            'location.required' => 'Event location is required.',
+            'number_of_tickets_per_timeslot.required' => 'Number of tickets per timeslot is required.',
+            'available_stands.required' => 'Number of available stands is required.',
         ]);
 
-        Event::create($validated);
+        Event::create($request->all());
 
         return redirect()->route('events.index')->with('success', 'Event created successfully.');
     }
 
-    // Show a specific event
-    public function show($id)
+    // Show the form to edit an existing event (optional if you still want to edit events)
+    public function edit(Event $event)
     {
-        $event = Event::findOrFail($id);
-        return view('events.show', compact('event'));
+        return view('admin.events.edit', compact('event'));
     }
 
-    // Show the form for editing an existing event
-    public function edit($id)
+    // Update an existing event
+    public function update(Request $request, Event $event)
     {
-        $event = Event::findOrFail($id);
-        return view('events.edit', compact('event'));
-    }
-
-    // Update an existing event in the database
-    public function update(Request $request, $id)
-    {
-        $event = Event::findOrFail($id);
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
+        $request->validate([
+            'name' => 'required',
             'date' => 'required|date',
-            'location' => 'required|string|max:255',
-            'available_tickets' => 'required|integer|min:1',
+            'location' => 'required',
+            'number_of_tickets_per_timeslot' => 'required|integer',
+            'available_stands' => 'required|integer',
+        ], [
+            'name.required' => 'Event name is required.',
+            'date.required' => 'Event date is required.',
+            'location.required' => 'Event location is required.',
+            'number_of_tickets_per_timeslot.required' => 'Number of tickets per timeslot is required.',
+            'available_stands.required' => 'Number of available stands is required.',
         ]);
 
-        $event->update($validated);
+        $event->update($request->all());
 
         return redirect()->route('events.index')->with('success', 'Event updated successfully.');
     }
 
     // Delete an event
-    public function destroy($id)
+    public function destroy(Event $event)
     {
-        $event = Event::findOrFail($id);
         $event->delete();
 
         return redirect()->route('events.index')->with('success', 'Event deleted successfully.');

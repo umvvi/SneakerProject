@@ -10,7 +10,7 @@ class Stand extends Model
     use HasFactory;
 
     protected $fillable = [
-        'vendor_id',
+        'seller_id',
         'stand_type',
         'price',
         'rented_status',
@@ -18,9 +18,8 @@ class Stand extends Model
         'remark',
     ];
 
-    // Define relationships
-    public function vendor()
+    public function seller()
     {
-        return $this->belongsTo(Vendor::class);
+        return $this->belongsTo(Seller::class);
     }
 }

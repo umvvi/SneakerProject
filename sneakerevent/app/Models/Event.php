@@ -13,15 +13,24 @@ class Event extends Model
         'name',
         'date',
         'location',
-        'available_tickets',
-        // Add other fields as necessary
+        'number_of_tickets_per_timeslot',
+        'available_stands',
+        'image',
+        'is_active',
+        'remark',
     ];
 
-    // Define any relationships here, for example:
+    // In Event.php
     public function tickets()
     {
-        return $this->hasMany(Ticket::class, 'evenementId'); // Adjust as needed
+        return $this->hasMany(Ticket::class);
     }
 
-    // You can add more relationships or methods if needed
+    // In Event.php
+    public function prices()
+    {
+        return $this->hasManyThrough(Price::class, Ticket::class, 'event_id', 'id', 'id', 'price_id');
+    }
+
+
 }

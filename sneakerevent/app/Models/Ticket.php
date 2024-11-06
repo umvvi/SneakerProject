@@ -10,7 +10,6 @@ class Ticket extends Model
     use HasFactory;
 
     protected $fillable = [
-        'visitor_id',
         'event_id',
         'price_id',
         'number_of_tickets',
@@ -19,16 +18,11 @@ class Ticket extends Model
         'remark',
     ];
 
-    // Define relationships
-    public function visitor()
-    {
-        return $this->belongsTo(Visitor::class);
-    }
-
     public function event()
     {
         return $this->belongsTo(Event::class);
     }
+
 
     public function price()
     {

@@ -3,54 +3,54 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrganizerResource\Pages;
-use App\Filament\Resources\OrganizerResource\RelationManagers;
 use App\Models\Organizer;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class OrganizerResource extends Resource
 {
     protected static ?string $model = Organizer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Organizers';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    public static function form(Form $form): Form
+    public static function form(Forms\Form $form): Forms\Form
     {
-        return $form
-            ->schema([
-                //
-            ]);
+        return $form->schema([
+            Forms\Components\TextInput::make('name')
+                ->required(),
+            Forms\Components\TextInput::make('username')
+                ->required()
+                ->unique(Organizer::class, 'username', ignoreRecord: true),
+            Forms\Components\TextInput::make('password')
+                ->password()
+                ->required(),
+            Forms\Components\Toggle::make('is_active')
+                ->label('Active')
+                ->default(true),
+            Forms\Components\Textarea::make('remark')
+                ->nullable(),
+        ]);
     }
 
-    public static function table(Table $table): Table
+    public static function table(Tables\Table $table): Tables\Table
     {
-        return $table
-            ->columns([
-                //
-            ])
+        return $table->columns([
+            Tables\Columns\TextColumn::make('name'),
+            Tables\Columns\TextColumn::make('username'),
+            Tables\Columns\BooleanColumn::make('is_active')
+                ->label('Active'),
+            Tables\Columns\TextColumn::make('created_at')
+                ->label('Created At')
+                ->dateTime(),
+        ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('active')->query(fn ($query) => $query->where('is_active', true)),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array

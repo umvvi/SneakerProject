@@ -5,15 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ContactPerson extends Model
+class Seller extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'phone_number',
-        'email_address',
-        'is_active',
-        'remark',
+        'email',
+        'phone',
+        'address',
     ];
+
+    public function stands()
+    {
+        return $this->hasMany(Stand::class);
+    }
 }

@@ -2,31 +2,29 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ContactPersonResource\Pages;
-use App\Models\ContactPerson;
+use App\Filament\Resources\SellerResource\Pages;
+use App\Models\Seller;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Tables;
 
-class ContactPersonResource extends Resource
+class SellerResource extends Resource
 {
-    protected static ?string $model = ContactPerson::class;
+    protected static ?string $model = Seller::class;
 
-    protected static ?string $navigationLabel = 'Contact Persons';
-    protected static ?string $navigationIcon = 'heroicon-o-user';
+    protected static ?string $navigationLabel = 'Sellers';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
     public static function form(Forms\Form $form): Forms\Form
     {
         return $form->schema([
             Forms\Components\TextInput::make('name')
                 ->required(),
-            Forms\Components\TextInput::make('email')
-                ->email()
-                ->required()
-                ->unique(ContactPerson::class, 'email', ignoreRecord: true),
+
             Forms\Components\Toggle::make('is_active')
                 ->label('Active')
                 ->default(true),
+
             Forms\Components\Textarea::make('remark')
                 ->nullable(),
         ]);
@@ -36,9 +34,11 @@ class ContactPersonResource extends Resource
     {
         return $table->columns([
             Tables\Columns\TextColumn::make('name'),
-            Tables\Columns\TextColumn::make('email'),
-            Tables\Columns\BooleanColumn::make('is_active')
+
+            Tables\Columns\IconColumn::make('is_active')
+                ->boolean()
                 ->label('Active'),
+
             Tables\Columns\TextColumn::make('created_at')
                 ->label('Created At')
                 ->dateTime(),
@@ -54,9 +54,9 @@ class ContactPersonResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListContactPersons::route('/'),
-            'create' => Pages\CreateContactPerson::route('/create'),
-            'edit' => Pages\EditContactPerson::route('/{record}/edit'),
+            'index' => Pages\ListSellers::route('/'),
+            'create' => Pages\CreateSeller::route('/create'),
+            'edit' => Pages\EditSeller::route('/{record}/edit'),
         ];
     }
 }
